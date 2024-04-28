@@ -12,7 +12,11 @@ public class Pessoa {
     private String nome;
     private LocalDate dataNascimento;
 
-    @OneToMany
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Endereco[] enderecos;
 
+    public Pessoa(DadosCadastroPessoa dados){
+        this.nome = dados.nome();
+        this.dataNascimento = dados.dataNascimento();
+    }
 }

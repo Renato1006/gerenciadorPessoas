@@ -24,7 +24,7 @@ public class Endereco {
     private String cidade;
     private String uf;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pessoa_id")
     private Pessoa pessoa;
 
