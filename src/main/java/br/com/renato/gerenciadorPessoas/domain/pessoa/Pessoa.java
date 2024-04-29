@@ -26,8 +26,11 @@ public class Pessoa {
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Endereco[] enderecos;
 
+    private Boolean ativo;
+
     public Pessoa(DadosCadastroPessoa dados){
         this.nome = dados.nome();
         this.dataNascimento = dados.dataNascimento();
+        this.ativo = true;
     }
 }

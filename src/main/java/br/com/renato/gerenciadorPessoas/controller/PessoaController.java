@@ -1,17 +1,14 @@
 package br.com.renato.gerenciadorPessoas.controller;
 
-import br.com.renato.gerenciadorPessoas.domain.pessoa.DadosCadastroPessoa;
-import br.com.renato.gerenciadorPessoas.domain.pessoa.DadosDetalhamentoPessoa;
-import br.com.renato.gerenciadorPessoas.domain.pessoa.Pessoa;
-import br.com.renato.gerenciadorPessoas.domain.pessoa.PessoaRepository;
+import br.com.renato.gerenciadorPessoas.domain.pessoa.*;
+import br.com.renato.gerenciadorPessoas.infra.exception.PaginacaoException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -30,5 +27,24 @@ public class PessoaController {
         var uri = uriBuilder.path("/pessoas/{id}").buildAndExpand(pessoa.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new DadosDetalhamentoPessoa(pessoa));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<DadosListagemPessoa>> listar(Pageable pageable){
+        var page = repository.findAllByAtivoTrue(pageable).map(DadosListagemPessoa::new);
+
+        if (page.isEmpty()){
+            throw new PaginacaoException("Não existe pessoas cadastradas!");
+        }
+
+        return ResponseEntity.ok(page);
+    }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoPessoa dados){
+        var pessoa = repository.getReferenceById(dados.id());
+
+
     }
 }
