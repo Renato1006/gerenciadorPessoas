@@ -2,6 +2,7 @@ package br.com.renato.gerenciadorPessoas.controller;
 
 import br.com.renato.gerenciadorPessoas.domain.pessoa.*;
 import br.com.renato.gerenciadorPessoas.infra.exception.PaginacaoException;
+import br.com.renato.gerenciadorPessoas.infra.exception.ValidacaoException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,15 @@ public class PessoaController {
         return ResponseEntity.ok(new DadosDetalhamentoPessoa(pessoa));
     }
 
+    @GetMapping("/{id}")
+    @Transactional
+    public ResponseEntity detalhar(@PathVariable Long id){
+        if (!repository.existsById(id)){
+            throw new ValidacaoException("Pessoa não encontrada!");
+        }
 
+        var pessoa = repository.getReferenceById(id);
+
+        return ResponseEntity.ok(new DadosDetalhamentoPessoa(pessoa));
+    }
 }
