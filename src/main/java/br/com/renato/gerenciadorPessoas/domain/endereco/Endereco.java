@@ -18,8 +18,10 @@ public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Enumerated(EnumType.STRING)
     private TipoEndereco tipo;
+
     private String logradouro;
     private String bairro;
     private String cep;
@@ -32,7 +34,8 @@ public class Endereco {
     @JoinColumn(name = "pessoa_id")
     private Pessoa pessoa;
 
-    public Endereco(DadosEndereco endereco) {
+    public Endereco(DadosCadastroEndereco endereco, Pessoa pessoa) {
+        this.tipo = endereco.tipo();
         this.logradouro = endereco.logradouro();
         this.bairro = endereco.bairro();
         this.cep = endereco.cep();
@@ -40,5 +43,7 @@ public class Endereco {
         this.complemento = endereco.complemento();
         this.cidade = endereco.cidade();
         this.uf = endereco.uf();
+
+        this.pessoa = pessoa;
     }
 }
