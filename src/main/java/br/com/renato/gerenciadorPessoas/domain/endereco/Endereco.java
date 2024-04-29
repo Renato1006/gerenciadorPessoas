@@ -3,13 +3,17 @@ package br.com.renato.gerenciadorPessoas.domain.endereco;
 import br.com.renato.gerenciadorPessoas.domain.pessoa.Pessoa;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Table(name = "endereco")
+@Entity(name = "endereco")
 @Embeddable
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

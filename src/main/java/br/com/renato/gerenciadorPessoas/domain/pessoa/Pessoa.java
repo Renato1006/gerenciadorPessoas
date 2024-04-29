@@ -2,9 +2,20 @@ package br.com.renato.gerenciadorPessoas.domain.pessoa;
 
 import br.com.renato.gerenciadorPessoas.domain.endereco.Endereco;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+@Table(name = "pessoa")
+@Entity(name = "pessoa")
+@Embeddable
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Pessoa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
