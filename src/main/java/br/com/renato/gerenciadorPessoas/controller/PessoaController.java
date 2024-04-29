@@ -45,6 +45,10 @@ public class PessoaController {
     public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoPessoa dados){
         var pessoa = repository.getReferenceById(dados.id());
 
+        pessoa.atualizarInformacoes(dados);
 
+        return ResponseEntity.ok(new DadosDetalhamentoPessoa(pessoa));
     }
+
+
 }

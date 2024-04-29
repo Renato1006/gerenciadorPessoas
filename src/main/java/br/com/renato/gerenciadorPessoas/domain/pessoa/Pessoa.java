@@ -33,4 +33,14 @@ public class Pessoa {
         this.dataNascimento = dados.dataNascimento();
         this.ativo = true;
     }
+
+    public void atualizarInformacoes(DadosAtualizacaoPessoa dados){
+        if (dados.nome() != null){
+            this.nome = dados.nome();
+        }
+
+        if (dados.dataNascimento() != null){
+            this.dataNascimento = dados.dataNascimento();
+        }
+    }
 }
