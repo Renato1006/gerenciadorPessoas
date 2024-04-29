@@ -1,19 +1,16 @@
 package br.com.renato.gerenciadorPessoas.controller;
 
-import br.com.renato.gerenciadorPessoas.domain.endereco.DadosCadastroEndereco;
-import br.com.renato.gerenciadorPessoas.domain.endereco.DadosDetalhamentoEndereco;
-import br.com.renato.gerenciadorPessoas.domain.endereco.Endereco;
-import br.com.renato.gerenciadorPessoas.domain.endereco.EnderecoRepository;
+import br.com.renato.gerenciadorPessoas.domain.endereco.*;
 import br.com.renato.gerenciadorPessoas.domain.pessoa.PessoaRepository;
+import br.com.renato.gerenciadorPessoas.infra.exception.PaginacaoException;
 import br.com.renato.gerenciadorPessoas.infra.exception.ValidacaoException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -41,5 +38,16 @@ public class EnderecoController {
         var uri = uriBuilder.path("/pets/{id}").buildAndExpand(endereco.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new DadosDetalhamentoEndereco(endereco));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Page<DadosDetalhamentoEndereco>> listar(@PathVariable Long id, Pageable pageable){
+        var page = repository.buscaTodosEnderecos(id,pageable).map(DadosDetalhamentoEndereco::new);
+
+        if (page.isEmpty()){
+            throw new PaginacaoException("Não existe endereço cadastrado desta pessoa");
+        }
+
+        return ResponseEntity.ok(page);
     }
 }
